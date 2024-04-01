@@ -20,6 +20,16 @@ class Model:
         img = Image.open(img_path)
         return self.model.encode(img)
 
+    def vectorize_text(self, text: str) -> np.array:
+        return self.model.encode(text)
+
+    def auto_markup(self, img):
+        '''
+        функция инференса YOLO
+        :return:
+        '''
+        pass
+
     def create_images_db(self, images_folder: str) -> pd.DataFrame:
         data_dict = dict()
         for file_name in os.listdir(images_folder):
@@ -41,6 +51,7 @@ class Model:
         result_distance = spatial.distance.cosine(emb_a, emb_b)
         return result_distance
 
+    '''надо переписать под разные модели'''
     def found_similar_images(self, input_img_path: str, images_db: pd.DataFrame) -> pd.DataFrame:
         input_vec = self.vectorize_img(input_img_path)
         result_df = copy.deepcopy(images_db)
@@ -51,6 +62,15 @@ class Model:
         result_df_sorted = result_df.sort_values('Distance_with_input').reset_index()
         result_df_sorted = result_df_sorted[['Image', 'Distance_with_input']]
         return result_df_sorted.head(self.topk)
+
+    def __call__(self, input, *args, **kwargs):
+        if self.embedding_name == 'vec_img_text':
+            output = self.vectorize_img(input)
+        elif self.embedding_name == 'vec_text':
+            output = self.vectorize_img(input)
+        else:
+            output = self.auto_markup(input)
+        return output
 
 
 # class ImageTextEncoder(Model):
