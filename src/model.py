@@ -8,7 +8,7 @@ import os
 
 
 class Model:
-    def __init__(self, config: str = 'cpu', topk: int = 20) -> None:
+    def __init__(self, config: str, topk: int = 20) -> None:
         self.config = config
         self.topk = topk
         self.model_name = self.config.NAME
