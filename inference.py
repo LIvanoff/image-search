@@ -43,5 +43,11 @@ class ModelLauncher:
         cfg.EXP_GROUP_PATH = '/'.join(config_path.split('/')[1:-1])  # remove 'cfgs' and 'xxxx.yaml'
         return cfg
 
-    def inference(self, x):
-        embedding = self.model(x)
+    def find_images(self, input: str, images_db: pd.DataFrame) -> pd.DataFrame:
+        input_vec = self.model(input)
+        result_df = copy.deepcopy(images_db)
+        result_df['Distance_with_input'] = result_df.apply(
+            lambda x: self.model.calculate_cos_dist(input_vec, x[f'{self.model.embedding_name}']), axis=1)
+        result_df_sorted = result_df.sort_values('Distance_with_input').reset_index()
+        result_df_sorted = result_df_sorted[['Image', 'Distance_with_input']]
+        return result_df_sorted.head(self.model.topk)
