@@ -1,0 +1,9 @@
+MODEL:
+  TEXT_ENCODER:
+    NAME: nli-distilroberta-base-v2
+    EMBEDDING_NAME: vec_text
+  IMAGE_TEXT_ENCODER:
+    NAME: clip-ViT-B-16
+    EMBEDDING_NAME: vec_img_text
+
+IMAGES_FOLDER: D:/MoscowTravelHack/moscow
