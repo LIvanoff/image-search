@@ -45,34 +45,3 @@ class ModelLauncher:
 
     def inference(self, x):
         embedding = self.model(x)
-
-
-# def inference():
-#     global input
-#     args, cfg = parse_config()
-
-    # images_folder = cfg.IMAGES_FOLDER
-    # if args.modality_type == 'multi':
-    #     cfg = cfg.MODEL.IMAGE_TEXT_ENCODER
-    #     assert args.img_path is not None, 'Missing one of required argument: --img_path'
-    #     input = args.img_path
-    # elif args.modality_type == 'uni':
-    #     cfg = cfg.MODEL.TEXT_ENCODER
-    #     assert args.query is not None, 'Missing one of required argument: --query'
-    #     input = args.query
-    #
-    # model = Model(cfg)
-    #
-    # # if os.path.isfile(f'{name}.xlsx'):
-    # #     images_db = pd.read_excel(f'{name}.xlsx')
-    # # else:
-    # images_db = model.create_images_db(images_folder)
-    #
-    # print(images_db)
-    #
-    # result_df = model.found_similar_images(input, images_db)
-    # print(result_df)
-
-
-# if __name__ == '__main__':
-#     main()
