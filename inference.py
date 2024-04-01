@@ -31,11 +31,7 @@ class ModelLauncher:
             raise NotImplementedError(f'Task {task_type} not implemented.\n'
                                       f'You can specify the following tasks: image_text_emb, text_emb or auto_markup')
 
-        self.model = Model(self.config)
-
-    def __call__(self, input, *args, **kwargs):
-        output = self.model.vectorize_img()
-        return output
+        self.model = Model(self.model_config)
 
     def parse_config(self, config_path):
         cfg_from_yaml_file(config_path, cfg)
