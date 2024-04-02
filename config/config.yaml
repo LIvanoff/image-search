@@ -1,9 +1,13 @@
 MODEL:
   TEXT_ENCODER:
     NAME: nli-distilroberta-base-v2
-    EMBEDDING_NAME: vec_text
+    OUTPUT: vec_text
   IMAGE_TEXT_ENCODER:
     NAME: clip-ViT-B-16
-    EMBEDDING_NAME: vec_img_text
+    OUTPUT: vec_img_text
+  AUTO_MARKUP:
+    NAME: yolov8x
+    OUTPUT: tag
+
 
 IMAGES_FOLDER: D:/MoscowTravelHack/moscow
