@@ -21,15 +21,15 @@ class ModelLauncher:
         self.config = self.parse_config(CFG_FILE_PATH)
         self.img_folder = self.config.IMAGES_FOLDER
 
-        if task_type == 'image_text_emb':
+        if task_type == 'image_text_encoding':
             self.model_config = self.config.MODEL.IMAGE_TEXT_ENCODER
-        elif task_type == 'text_emb':
+        elif task_type == 'text_encoding':
             self.model_config = self.config.MODEL.TEXT_ENCODER
-        # elif task_type == 'auto_markup':
-        #     self.model_config = None
+        elif task_type == 'tagging':
+            self.model_config = self.config.MODEL.AUTO_MARKUP
         else:
             raise NotImplementedError(f'Task {task_type} not implemented.\n'
-                                      f'You can specify the following tasks: image_text_emb, text_emb or auto_markup')
+                                      f'You can specify the following tasks: image_text_emb, text_emb or tagging')
 
         self.model = Model(self.model_config)
 
@@ -43,7 +43,10 @@ class ModelLauncher:
         input_vec = self.model(input)
         result_df = copy.deepcopy(images_db)
         result_df['Distance_with_input'] = result_df.apply(
-            lambda x: self.model.calculate_cos_dist(input_vec, x[f'{self.model.embedding_name}']), axis=1)
+            lambda x: self.model.calculate_cos_dist(input_vec, x[f'{self.model.output_name}']), axis=1)
         result_df_sorted = result_df.sort_values('Distance_with_input').reset_index()
         result_df_sorted = result_df_sorted[['Image', 'Distance_with_input']]
         return result_df_sorted.head(self.model.topk)
+
+    def tagging(self, input):
+        output = self.model(input)
