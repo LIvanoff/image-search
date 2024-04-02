@@ -50,3 +50,8 @@ class ModelLauncher:
 
     def tagging(self, input):
         output = self.model(input)
+
+model = ModelLauncher('tagging')
+img = 'C:/Users/drfri/Pictures/0EmTWIPreJQ.jpg'
+out = model.tagging(img)
+print(out)
