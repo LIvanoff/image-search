@@ -38,7 +38,7 @@ class Model:
         if self.output_name == 'vec_img_text':
             forward[self.output_name] = self.vectorize_img
         elif self.output_name == 'vec_text':
-            forward[self.output_name] = self.vectorize_img
+            forward[self.output_name] = self.vectorize_text
         else:
             forward[self.output_name] = self.detect
         return forward
