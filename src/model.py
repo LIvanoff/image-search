@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import copy
 import os
+from pathlib import Path
 from ultralytics import YOLO
 
 
@@ -17,10 +18,13 @@ class Model:
         self.output_name = self.config.OUTPUT
 
         if self.config.TASK == 'tagging':
-            self.tags_list = self.config.TAGS
-            self.model = YOLO(self.model_name)
+            self.tags_dict = self.config.TAGS
+            yolo_wts = self.model_name + '.pt'
+            self.model = YOLO(yolo_wts)
         else:
             self.model = SentenceTransformer(self.model_name)
+
+        self.forward = self.setup_forward()
 
     def vectorize_img(self, img_path: str) -> np.array:
         img = Image.open(img_path)
@@ -28,6 +32,16 @@ class Model:
 
     def vectorize_text(self, text: str) -> np.array:
         return self.model.encode(text)
+
+    def setup_forward(self):
+        forward = {}
+        if self.output_name == 'vec_img_text':
+            forward[self.output_name] = self.vectorize_img
+        elif self.output_name == 'vec_text':
+            forward[self.output_name] = self.vectorize_img
+        else:
+            forward[self.output_name] = self.detect
+        return forward
 
     def detect(self, img_path: str):
         '''
@@ -66,13 +80,8 @@ class Model:
         return result_distance
 
     def __call__(self, input, *args, **kwargs):
-        if self.output_name == 'vec_img_text':
-            output = self.vectorize_img(input)
-        elif self.output_name == 'vec_text':
-            output = self.vectorize_img(input)
-        else:
-            output = self.detect(input)
-        return output
+        out = self.forward[self.output_name](input)
+        return out
 
 # class ImageTextEncoder(Model):
 #     def __init__(self, config: str):
