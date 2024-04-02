@@ -26,7 +26,7 @@ class ModelLauncher:
         elif task_type == 'text_encoding':
             self.model_config = self.config.MODEL.TEXT_ENCODER
         elif task_type == 'tagging':
-            self.model_config = self.config.MODEL.AUTO_MARKUP
+            self.model_config = self.config.MODEL.DETECT
         else:
             raise NotImplementedError(f'Task {task_type} not implemented.\n'
                                       f'You can specify the following tasks: image_text_enc, text_enc or tagging')
