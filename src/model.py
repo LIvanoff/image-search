@@ -37,12 +37,12 @@ class Model:
         image = Image.open(img_path)
         result = self.model(image)
         cls_id = [int(x) for x in result[0].boxes.cls.cpu()]
-        return
-
+        cls = self.id_to_names(cls_id)
+        return cls
 
     def id_to_names(self, cls_id):
-        pass
-
+        names = []
+        return names
 
     def create_images_db(self, images_folder: str) -> pd.DataFrame:
         data_dict = dict()
@@ -74,8 +74,6 @@ class Model:
             output = self.detect(input)
         return output
 
-
 # class ImageTextEncoder(Model):
 #     def __init__(self, config: str):
 #         super().__init__(config)
-
