@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import copy
 import os
+from ultralytics import YOLO
 
 
 class Model:
@@ -12,9 +13,14 @@ class Model:
         self.config = config
         self.topk = topk
         self.model_name = self.config.NAME
-        self.model = SentenceTransformer(self.model_name)
         self.db_name = self.config.OUTPUT
         self.output_name = self.config.OUTPUT
+
+        if self.config.TASK == 'tagging':
+            self.tags_list = self.config.TAGS
+            self.model = YOLO(self.model_name)
+        else:
+            self.model = SentenceTransformer(self.model_name)
 
     def vectorize_img(self, img_path: str) -> np.array:
         img = Image.open(img_path)
@@ -23,12 +29,20 @@ class Model:
     def vectorize_text(self, text: str) -> np.array:
         return self.model.encode(text)
 
-    def auto_markup(self, img):
+    def detect(self, img_path: str):
         '''
         функция инференса YOLO
         :return:
         '''
+        image = Image.open(img_path)
+        result = self.model(image)
+        cls_id = [int(x) for x in result[0].boxes.cls.cpu()]
+        return
+
+
+    def id_to_names(self, cls_id):
         pass
+
 
     def create_images_db(self, images_folder: str) -> pd.DataFrame:
         data_dict = dict()
@@ -57,7 +71,7 @@ class Model:
         elif self.output_name == 'vec_text':
             output = self.vectorize_img(input)
         else:
-            output = self.auto_markup(input)
+            output = self.detect(input)
         return output
 
 
