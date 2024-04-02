@@ -50,6 +50,12 @@ class ModelLauncher:
 
     def tagging(self, input):
         output = self.model(input)
+        return output
+
+    def vectorize(self, input):
+        output = self.model(input)
+        return output
+
 
 model = ModelLauncher('tagging')
 img = 'C:/Users/drfri/Pictures/0EmTWIPreJQ.jpg'
