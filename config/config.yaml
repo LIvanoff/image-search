@@ -20,5 +20,6 @@ MODEL:
       fire_hydrant: 10
       parking_meter: 12
       bench: 13
+    CONF: 0.5
 
 IMAGES_FOLDER: D:/MoscowTravelHack/moscow
