@@ -18,7 +18,9 @@ class Model:
         self.output_name = self.config.OUTPUT
 
         if self.config.TASK == 'tagging':
-            self.tags_dict = self.config.TAGS
+            self.tags_dict = self.inverse_tags(self.config.TAGS)
+            self.classes = list(self.tags_dict.keys())
+            self.conf = self.config.CONF
             yolo_wts = self.model_name + '.pt'
             self.model = YOLO(yolo_wts)
         else:
@@ -32,6 +34,11 @@ class Model:
 
     def vectorize_text(self, text: str) -> np.array:
         return self.model.encode(text)
+
+    def inverse_tags(self, tags_dict):
+        new_tags_dict = {v: k for k, v in tags_dict.items()}
+        return new_tags_dict
+
 
     def setup_forward(self):
         forward = {}
@@ -49,13 +56,16 @@ class Model:
         :return:
         '''
         image = Image.open(img_path)
-        result = self.model(image)
+        result = self.model.predict(image, classes=self.classes, conf=self.conf)
         cls_id = [int(x) for x in result[0].boxes.cls.cpu()]
         cls = self.id_to_names(cls_id)
         return cls
 
     def id_to_names(self, cls_id):
         names = []
+        for id in cls_id:
+            if id in self.tags_dict.keys() and self.tags_dict[id] not in names:
+                names.append(self.tags_dict[id])
         return names
 
     def create_images_db(self, images_folder: str) -> pd.DataFrame:
