@@ -40,6 +40,9 @@ class ModelLauncher:
         return cfg
 
     def find_images(self, input: str, images_db: pd.DataFrame) -> pd.DataFrame:
+        assert self.model.task == 'vectorize', f'Функцию find_images() нельзя вызвать для модели ' \ 
+                f'{self.model.model_name}, она выполняет задачу {self.model.task}'
+
         output_vec = self.model(input)
         result_df = copy.deepcopy(images_db)
         result_df['Distance_with_input'] = result_df.apply(
@@ -49,12 +52,14 @@ class ModelLauncher:
         return result_df_sorted.head(self.model.topk)
 
     def tagging(self, input):
-        assert self.model.task == 'tagging', f'Функцию tagging() нельзя вызвать для модели {self.model.model_name}, она выполняет задачу {self.model.task}'
+        assert self.model.task == 'tagging', f'Функцию tagging() нельзя вызвать для модели {self.model.model_name}, ' \
+                                             f'она выполняет задачу {self.model.task}'
         output = self.model(input)
         return output
 
     def vectorize(self, input):
-        assert self.model.task == 'vectorize', f'Функцию vectorize() нельзя вызвать для модели {self.model.model_name}, она выполняет задачу {self.model.task}'
+        assert self.model.task == 'vectorize', f'Функцию vectorize() нельзя вызвать для модели {self.model.model_name}' \
+                f', она выполняет задачу {self.model.task}'
         output = self.model(input)
         return output
 

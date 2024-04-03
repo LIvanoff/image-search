@@ -43,7 +43,6 @@ class Model:
         new_tags_dict = {v: k for k, v in tags_dict.items()}
         return new_tags_dict
 
-
     def setup_forward(self):
         forward = {}
         if self.output_name == 'vec_img_text':
