@@ -29,14 +29,14 @@ class Model:
 
         self.forward = self.setup_forward()
 
-    def vectorize_img(self, img) -> np.array:
+    def __vectorize_img(self, img) -> np.array:
         '''
         :param img: file
         :return: list
         '''
         return self.model.encode(img)
 
-    def vectorize_text(self, text: str) -> np.array:
+    def __vectorize_text(self, text: str) -> np.array:
         return self.model.encode(text)
 
     def inverse_tags(self, tags_dict):
@@ -46,17 +46,17 @@ class Model:
     def setup_forward(self):
         forward = {}
         if self.output_name == 'vec_img_text':
-            forward[self.output_name] = self.vectorize_img
+            forward[self.output_name] = self.__vectorize_img
         elif self.output_name == 'vec_text':
-            forward[self.output_name] = self.vectorize_text
+            forward[self.output_name] = self.__vectorize_text
         else:
-            forward[self.output_name] = self.detect
+            forward[self.output_name] = self.__detect
         return forward
 
-    def detect(self, img: str):
+    def __detect(self, img):
         '''
         функция инференса YOLO
-        :return:
+        :return: list
         '''
         result = self.model.predict(img, classes=self.classes, conf=self.conf)
         cls_id = [int(x) for x in result[0].boxes.cls.cpu()]
@@ -75,7 +75,7 @@ class Model:
         for file_name in os.listdir(images_folder):
             image_path = os.path.join(images_folder, file_name)
             if os.path.isfile(image_path):
-                emb = self.vectorize_img(image_path)
+                emb = self.__vectorize_img(image_path)
                 data_dict[file_name] = emb
         images_db = pd.DataFrame(data_dict.items(), columns=['Image', self.output_name])
         images_db.to_excel(f"{self.db_name}.xlsx")
