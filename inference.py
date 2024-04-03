@@ -28,8 +28,8 @@ class ModelLauncher:
         elif task_type == 'tagging':
             self.model_config = self.config.MODEL.DETECT
         else:
-            raise NotImplementedError(f'Task {task_type} not implemented.\n'
-                                      f'You can specify the following tasks: image_text_enc, text_enc or tagging')
+            raise NotImplementedError(f'Задачи {task_type} не существует.\n'
+                                      f'Вы можете указать одну из следующих задач: image_text_enc, text_enc or tagging')
 
         self.model = Model(self.model_config)
 
@@ -49,15 +49,17 @@ class ModelLauncher:
         return result_df_sorted.head(self.model.topk)
 
     def tagging(self, input):
+        assert self.model.task == 'tagging', f'Функцию tagging() нельзя вызвать для модели {self.model.model_name}, она выполняет задачу {self.model.task}'
         output = self.model(input)
         return output
 
     def vectorize(self, input):
+        assert self.model.task == 'vectorize', f'Функцию vectorize() нельзя вызвать для модели {self.model.model_name}, она выполняет задачу {self.model.task}'
         output = self.model(input)
         return output
 
 
-model = ModelLauncher('tagging')
-img = 'C:/Users/drfri/Pictures/0EmTWIPreJQ.jpg'
-out = model.tagging(img)
-print(out)
+# model = ModelLauncher('tagging')
+# img = 'C:/Users/drfri/Pictures/0EmTWIPreJQ.jpg'
+# out = model.vectorize(img)
+# print(out)
