@@ -28,8 +28,11 @@ class Model:
 
         self.forward = self.setup_forward()
 
-    def vectorize_img(self, img_path: str) -> np.array:
-        img = Image.open(img_path)
+    def vectorize_img(self, img) -> np.array:
+        '''
+        :param img: file
+        :return: list
+        '''
         return self.model.encode(img)
 
     def vectorize_text(self, text: str) -> np.array:
@@ -50,13 +53,12 @@ class Model:
             forward[self.output_name] = self.detect
         return forward
 
-    def detect(self, img_path: str):
+    def detect(self, img: str):
         '''
         функция инференса YOLO
         :return:
         '''
-        image = Image.open(img_path)
-        result = self.model.predict(image, classes=self.classes, conf=self.conf)
+        result = self.model.predict(img, classes=self.classes, conf=self.conf)
         cls_id = [int(x) for x in result[0].boxes.cls.cpu()]
         cls = self.id_to_names(cls_id)
         return cls
