@@ -40,8 +40,7 @@ class ModelLauncher:
         return cfg
 
     def find_images(self, input: str, images_db: pd.DataFrame) -> pd.DataFrame:
-        assert self.model.task == 'vectorize', f'Функцию find_images() нельзя вызвать для модели ' \ 
-                f'{self.model.model_name}, она выполняет задачу {self.model.task}'
+        assert self.model.task == 'vectorize', f'Функцию find_images() нельзя вызвать для модели {self.model.model_name}, она выполняет задачу {self.model.task}'
 
         output_vec = self.model(input)
         result_df = copy.deepcopy(images_db)
@@ -58,13 +57,14 @@ class ModelLauncher:
         return output
 
     def vectorize(self, input):
-        assert self.model.task == 'vectorize', f'Функцию vectorize() нельзя вызвать для модели {self.model.model_name}' \
+        assert self.model.task == 'encoding', f'Функцию vectorize() нельзя вызвать для модели {self.model.model_name}' \
                 f', она выполняет задачу {self.model.task}'
         output = self.model(input)
         return output
 
 
-# model = ModelLauncher('tagging')
-# img = 'C:/Users/drfri/Pictures/0EmTWIPreJQ.jpg'
-# out = model.vectorize(img)
-# print(out)
+model = ModelLauncher('image_text_encoding')
+img = 'C:/Users/drfri/Pictures/0EmTWIPreJQ.jpg'
+out = model.vectorize(img)
+print(out.shape)
+print(type(out))
