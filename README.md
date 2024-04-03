@@ -18,7 +18,8 @@ model = ModelLauncher('tagging')
 ```
 #### Вызвать функцию тэггинга
 ```python
-model.tagging(file)
+tags = model.tagging(file)
+# tags = ['peson', 'car']
 ```
 #### Вызвать функцию поиска похожих изображений
 ```python
@@ -26,10 +27,16 @@ model.find_images(file)
 ```
 #### Вызвать функцию векторизации картинки
 ```python
-model.vectorize(file)
+vector = model.vectorize(file)
+# vector = [0.3258 -0.19153 -0.031129 0.16856 -0.32208 ... -0.9297]
+# vector.shape = (512,)
+# type(vector) = <class 'numpy.ndarray'>
 ```
 #### Вызвать функцию векторизации текста
 ```python
 text = 'Москва, 1980 г.'
 model.vectorize(text)
+# vector = [0.3258 -0.19153 -0.031129 0.16856 -0.32208 ... -0.9297]
+# vector.shape = (768,)
+# type(vector) = <class 'numpy.ndarray'>
 ```
