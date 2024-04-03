@@ -16,8 +16,9 @@ class Model:
         self.model_name = self.config.NAME
         self.db_name = self.config.OUTPUT
         self.output_name = self.config.OUTPUT
+        self.task = self.config.TASK
 
-        if self.config.TASK == 'tagging':
+        if self.task == 'tagging':
             self.tags_dict = self.inverse_tags(self.config.TAGS)
             self.classes = list(self.tags_dict.keys())
             self.conf = self.config.CONF
