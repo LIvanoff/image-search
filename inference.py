@@ -63,8 +63,8 @@ class ModelLauncher:
         return output
 
 
-model = ModelLauncher('image_text_encoding')
-img = 'C:/Users/drfri/Pictures/0EmTWIPreJQ.jpg'
-out = model.vectorize(img)
-print(out.shape)
-print(type(out))
+# model = ModelLauncher('image_text_encoding')
+# img = 'C:/Users/drfri/Pictures/0EmTWIPreJQ.jpg'
+# out = model.vectorize(img)
+# print(out.shape)
+# print(type(out))
