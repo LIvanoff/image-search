@@ -1,13 +1,9 @@
-from sentence_transformers import SentenceTransformer
-from scipy import spatial
-from PIL import Image
 import pandas as pd
-import numpy as np
 import copy
 import os
 from pathlib import Path
 
-from config import cfg, cfg_from_yaml_file, log_config_to_file
+from config import cfg, cfg_from_yaml_file
 from src.model import Model
 
 config_folder = Path('config')
