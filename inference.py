@@ -15,7 +15,6 @@ CFG_FILE_PATH = os.path.join((Path(__file__).resolve().parent / './'), config_ro
 class ModelLauncher:
     def __init__(self, task_type: str):
         self.config = self.parse_config(CFG_FILE_PATH)
-        self.img_folder = self.config.IMAGES_FOLDER
 
         if task_type == 'image_text_encoding':
             self.model_config = self.config.MODEL.IMAGE_TEXT_ENCODER
@@ -59,8 +58,9 @@ class ModelLauncher:
         return output
 
 
-# model = ModelLauncher('image_text_encoding')
-# img = 'C:/Users/drfri/Pictures/0EmTWIPreJQ.jpg'
-# out = model.vectorize(img)
-# print(out.shape)
-# print(type(out))
+model = ModelLauncher('text_encoding')
+text = 'Москва, 1980 г.'
+text += 'car'
+out = model.vectorize(text)
+print(out.shape)
+print(type(out))
