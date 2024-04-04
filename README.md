@@ -12,7 +12,7 @@ pip3 install -r requirements.txt
 
 ## Запуск 
 
-Создать объект класса ModelLauncher, указав одну из задач: 'tagging', 'image_text_enc' или 'text_enc'.
+Создать объект класса ModelLauncher, указав одну из задач: `tagging`, `image_text_enc` или `text_enc`.
 ```python
 model = ModelLauncher('tagging')
 ```
