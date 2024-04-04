@@ -1,12 +1,11 @@
-from sentence_transformers import SentenceTransformer
-from scipy import spatial
-from PIL import Image
-import pandas as pd
-import numpy as np
-import copy
 import os
-from pathlib import Path
+
+import numpy as np
+import pandas as pd
+from scipy import spatial
+
 from ultralytics import YOLO
+from sentence_transformers import SentenceTransformer
 
 
 class Model:
