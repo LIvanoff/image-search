@@ -10,9 +10,9 @@ from ultralytics import YOLO
 
 
 class Model:
-    def __init__(self, config: str, topk: int = 20) -> None:
+    def __init__(self, config: str) -> None:
         self.config = config
-        self.topk = topk
+        self.topk = self.config.TOPK
         self.model_name = self.config.NAME
         self.db_name = self.config.OUTPUT
         self.output_name = self.config.OUTPUT

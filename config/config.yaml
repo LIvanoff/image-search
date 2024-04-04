@@ -3,10 +3,12 @@ MODEL:
     NAME: nli-distilroberta-base-v2
     OUTPUT: vec_text
     TASK: encoding
+    TOPK: 20
   IMAGE_TEXT_ENCODER:
     NAME: clip-ViT-B-16
     OUTPUT: vec_img_text
     TASK: encoding
+    TOPK: 20
   DETECT:
     NAME: yolov8x
     OUTPUT: tag
