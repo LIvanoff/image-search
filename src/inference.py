@@ -4,9 +4,9 @@ import os
 from pathlib import Path
 
 from config import cfg, cfg_from_yaml_file
-from src.model import Model
+from model import Model
 
-config_folder = Path('config')
+config_folder = Path('../config')
 config_file = Path('config.yaml')
 config_root = os.path.join(config_folder, config_file)
 CFG_FILE_PATH = os.path.join((Path(__file__).resolve().parent / './'), config_root)
