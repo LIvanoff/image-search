@@ -11,7 +11,6 @@ from sentence_transformers import SentenceTransformer
 class Model:
     def __init__(self, config: str) -> None:
         self.config = config
-        self.topk = self.config.TOPK
         self.model_name = self.config.NAME
         self.db_name = self.config.OUTPUT
         self.output_name = self.config.OUTPUT
@@ -24,6 +23,7 @@ class Model:
             yolo_wts = self.model_name + '.pt'
             self.model = YOLO(yolo_wts)
         else:
+            self.topk = self.config.TOPK
             self.model = SentenceTransformer(self.model_name)
 
         self.forward = self.setup_forward()

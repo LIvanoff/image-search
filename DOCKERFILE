@@ -1,0 +1,11 @@
+FROM python:3.11 as python-base
+
+RUN mkdir image-search
+
+WORKDIR  /image-search
+
+RUN pip3 install -r requirements.txt
+
+COPY . .
+
+RUN gunicorn -w 4 -k uvicorn.workers.UvicornWorker src.main:app --bind 0.0.0.0:8001

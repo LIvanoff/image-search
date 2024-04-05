@@ -3,8 +3,8 @@ import copy
 import os
 from pathlib import Path
 
-from config import cfg, cfg_from_yaml_file
-from model import Model
+from src.config import cfg, cfg_from_yaml_file
+from src.model import Model
 
 config_folder = Path('../config')
 config_file = Path('config.yaml')
@@ -24,7 +24,7 @@ class ModelLauncher:
             self.model_config = self.config.MODEL.DETECT
         else:
             raise NotImplementedError(f'Задачи {task_type} не существует.\n'
-                                      f'Вы можете указать одну из следующих задач: image_text_enc, text_enc or tagging')
+                                      f'Вы можете указать одну из следующих задач: image_text_encoding, text_encoding or tagging')
 
         self.model = Model(self.model_config)
 
