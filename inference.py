@@ -34,6 +34,7 @@ class ModelLauncher:
         cfg.EXP_GROUP_PATH = '/'.join(config_path.split('/')[1:-1])  # remove 'cfgs' and 'xxxx.yaml'
         return cfg
 
+    # TODO:
     def find_images(self, input: str, images_db: pd.DataFrame) -> pd.DataFrame:
         assert self.model.task == 'vectorize', f'Функцию find_images() нельзя вызвать для модели {self.model.model_name}, она выполняет задачу {self.model.task}'
 
@@ -45,22 +46,23 @@ class ModelLauncher:
         result_df_sorted = result_df_sorted[['Image', 'Distance_with_input']]
         return result_df_sorted.head(self.model.topk)
 
+    # TODO: на вход подается файл с изображением, на выходе list с тэгами
     def tagging(self, input):
         assert self.model.task == 'tagging', f'Функцию tagging() нельзя вызвать для модели {self.model.model_name}, ' \
                                              f'она выполняет задачу {self.model.task}'
         output = self.model(input)
         return output
 
+    # TODO: на вход подается файл с изображением или текст, или список, на выходе список (вектор) или список списков (список векторов)
     def vectorize(self, input):
         assert self.model.task == 'encoding', f'Функцию vectorize() нельзя вызвать для модели {self.model.model_name}' \
-                f', она выполняет задачу {self.model.task}'
+                                              f', она выполняет задачу {self.model.task}'
         output = self.model(input)
         return output
 
-
-model = ModelLauncher('text_encoding')
-text = 'Москва, 1980 г.'
-text += 'car'
-out = model.vectorize(text)
-print(out.shape)
-print(type(out))
+# model = ModelLauncher('image_text_encoding')
+# text = 'Москва, 1980 г.'
+# # text += 'car'
+# out = model.vectorize(text)
+# print(out.shape)
+# print(type(out))
