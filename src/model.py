@@ -15,13 +15,14 @@ class Model:
         self.db_name = self.config.OUTPUT
         self.output_name = self.config.OUTPUT
         self.task = self.config.TASK
+        self.device = self.config.DEVICE
 
         if self.task == 'tagging':
             self.tags_dict = self.inverse_tags(self.config.TAGS)
             self.classes = list(self.tags_dict.keys())
             self.conf = self.config.CONF
             yolo_wts = self.model_name + '.pt'
-            self.model = YOLO(yolo_wts)
+            self.model = YOLO(yolo_wts, device=self.config.DEVICE)
         else:
             self.topk = self.config.TOPK
             self.model = SentenceTransformer(self.model_name)
