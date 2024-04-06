@@ -69,17 +69,6 @@ class Model:
                 names.append(self.tags_dict[id])
         return names
 
-    def create_images_db(self, images_folder: str) -> pd.DataFrame:
-        data_dict = dict()
-        for file_name in os.listdir(images_folder):
-            image_path = os.path.join(images_folder, file_name)
-            if os.path.isfile(image_path):
-                emb = self.__vectorize_img(image_path)
-                data_dict[file_name] = emb
-        images_db = pd.DataFrame(data_dict.items(), columns=['Image', self.output_name])
-        images_db.to_excel(f"{self.db_name}.xlsx")
-        return images_db
-
     def get_df(self, df_path: str) -> pd.DataFrame:
         data_df = pd.read_json(df_path)
         data_df[f'{self.output_name}'] = data_df[f'{self.output_name}'].apply(lambda x: np.array(x))
@@ -93,7 +82,3 @@ class Model:
     def __call__(self, input, *args, **kwargs):
         out = self.forward[self.output_name](input)
         return out
-
-# class ImageTextEncoder(Model):
-#     def __init__(self, config: str):
-#         super().__init__(config)
