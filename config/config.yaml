@@ -1,6 +1,7 @@
 MODEL:
   TEXT_ENCODER:
-    NAME: nli-distilroberta-base-v2
+    NAME: paraphrase-multilingual-MiniLM-L12-v2
+#    nli-distilroberta-base-v2
     OUTPUT: vec_text
     TASK: encoding
     TOPK: 20
@@ -23,3 +24,5 @@ MODEL:
       parking_meter: 12
       bench: 13
     CONF: 0.5
+
+DEVICE: cpu
