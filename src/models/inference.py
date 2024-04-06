@@ -1,12 +1,14 @@
+from typing import Any
+
 import pandas as pd
 import copy
 import os
 from pathlib import Path
 
 from src.config import cfg, cfg_from_yaml_file
-from src.model import Model
+from src.models.model import Model
 
-config_folder = Path('../config')
+config_folder = Path('../../config')
 config_file = Path('config.yaml')
 config_root = os.path.join(config_folder, config_file)
 CFG_FILE_PATH = os.path.join((Path(__file__).resolve().parent / './'), config_root)
@@ -35,7 +37,7 @@ class ModelLauncher:
         return cfg
 
     # TODO:
-    def find_images(self, input: str, images_db: pd.DataFrame) -> pd.DataFrame:
+    def find_images(self, input: str | Any, images_db: pd.DataFrame) -> pd.DataFrame:
         assert self.model.task == 'vectorize', f'Функцию find_images() нельзя вызвать для модели {self.model.model_name}, она выполняет задачу {self.model.task}'
 
         output_vec = self.model(input)
