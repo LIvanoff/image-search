@@ -5,13 +5,15 @@ MODEL:
     OUTPUT: vec_text
     TASK: encoding
     TOPK: 20
+    DEVICE: cpu
   IMAGE_TEXT_ENCODER:
     NAME: clip-ViT-B-16
     OUTPUT: vec_img_text
     TASK: encoding
     TOPK: 20
+    DEVICE: cpu
   DETECT:
-    NAME: yolov8x
+    NAME: yolov8m
     OUTPUT: tag
     TASK: tagging
     TAGS:
@@ -23,6 +25,5 @@ MODEL:
       fire_hydrant: 10
       parking_meter: 12
       bench: 13
-    CONF: 0.5
-
-DEVICE: cpu
+    CONF: 0.8
+    DEVICE: cpu
