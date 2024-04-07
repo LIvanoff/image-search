@@ -29,8 +29,13 @@ class Model:
         else:
             self.device = self.config.DEVICE
             is_gpu = True if self.device == 'gpu' else False
-            self.model = easyocr.Reader(lngs, gpu=is_gpu)
 
+            self.paragraph: bool = self.config.PARAGRAPH
+            self.text_threshold = self.config.TEXT_THRESHOLD
+            self.model = easyocr.Reader(
+                                        lngs,
+                                        gpu=is_gpu
+            )
         self.forward = self.setup_forward()
 
     def __vectorize_img(self, img) -> np.array:
