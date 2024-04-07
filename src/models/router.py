@@ -50,8 +50,14 @@ async def translate(
     input = Image.open(file)
     model = ModelLauncher('ocr', lngs=['en', 'ru'])
     output = model.translate(input)
-    result = model.text_to_image(output, input=input)
-    return output, result.tolist()
+    print(output)
+    if output is not None:
+        result = model.text_to_image(output, input=input).tolist()
+    else:
+        result = None
+    return {
+        'output': output,
+        'image': result}
 
 
 @router.post("/find_images_photo")
