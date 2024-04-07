@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from sqlalchemy import Float, ForeignKey
 from sqlalchemy.dialects.postgresql import ARRAY
@@ -91,3 +92,17 @@ class Photo(Base):
         nullable=False, default=datetime.utcnow
     )
     updated_by: Mapped[str] = mapped_column(nullable=False)
+
+
+# class UserFilters(Base):
+#     season: Optional[int] = None
+#     day_time: Optional[int] = None
+#     orientation: Optional[int] = None
+#     format: Optional[int] = None
+#     file_size_name: Optional[int] = None
+#     has_people: Optional[bool] = None
+#     primary_color: Optional[int] = None
+
+
+# class Admin(UserFilters):
+#     status: Optional[int] = None

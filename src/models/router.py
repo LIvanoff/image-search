@@ -107,7 +107,7 @@ async def search_photos(
 async def vectorize(item: ItemImg):
     image = Image.open(io.BytesIO(item.content))
     model = ModelLauncher(
-        "image_text_encoding"
+        "image_encoding"
     )  # Используем ту же модель, что и для поиска изображений
     vector = model.vectorize(image)
     return {"vector": vector.tolist()}  # Преобразуем numpy array в список
@@ -123,7 +123,7 @@ async def vectorize_text(text: str):
 @router.post("/all")
 async def all(filename: str, content: UploadFile):
     model_text = ModelLauncher("text_encoding")
-    model_img = ModelLauncher("image_text_encoding")
+    model_img = ModelLauncher("image_encoding")
     model_tags = ModelLauncher("tagging")
 
     image = Image.open(content.file)
