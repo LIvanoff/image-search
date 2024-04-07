@@ -17,6 +17,8 @@ MODEL:
     OUTPUT: text
     TASK: translate
     DEVICE: cpu
+    PARAGRAPH: 1
+    TEXT_THRESHOLD: 0.9
   DETECT:
     NAME: yolov8m
     OUTPUT: tags
