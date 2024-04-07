@@ -50,7 +50,7 @@ async def find_images(
     input = Image.open(file.file)
     model = ModelLauncher("image_text_encoding")
 
-    image_db = model.create_images_df(photos, filters)
+    image_db = model.create_images_df(photos)
     similar_images = model.find_images(input=input, images_db=image_db)
     return {"similar_images": similar_images.id.tolist()}
 
@@ -113,16 +113,17 @@ async def all(filename: str, content: UploadFile):
     tags = model_tags.tagging(image)
 
     palette = get_palette(image)
+    # print(palette)
 
     return {
         "vector_text": vector_text.tolist(),
         "vector_img": vector_img.tolist(),
         "tags": tags,
-        "palette": palette
+        "palette": palette.tolist()
     }
 
 
-async def get_palette(image, palette_size: int = 5):
+def get_palette(image, palette_size: int = 5):
     arr = np.asarray(image)
     palette, index = np.unique(asvoid(arr).ravel(), return_inverse=True)
     palette = palette.view(arr.dtype).reshape(-1, arr.shape[-1])
