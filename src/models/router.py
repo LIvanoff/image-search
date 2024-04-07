@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 import numpy as np
-import easyocr
+import requests
 
 from src.database import database
 from src.models.inference import ModelLauncher
@@ -43,13 +43,15 @@ async def find_images(
 
 @router.post("/translate")
 async def translate(
-    file: UploadFile
+    URL: str
 ):
-    input = Image.open(file.file)
+    response = requests.get(URL)
+    file = io.BytesIO(response.content)
+    input = Image.open(file)
     model = ModelLauncher('ocr', lngs=['en', 'ru'])
     output = model.translate(input)
     result = model.text_to_image(output, input=input)
-    return result.tolist()
+    return output, result.tolist()
 
 
 @router.post("/find_images_photo")
