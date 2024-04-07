@@ -1,6 +1,7 @@
 import os
 
 import numpy as np
+import easyocr
 import pandas as pd
 from scipy import spatial
 
@@ -9,7 +10,7 @@ from sentence_transformers import SentenceTransformer
 
 
 class Model:
-    def __init__(self, config: str) -> None:
+    def __init__(self, config: str, lngs: list) -> None:
         self.config = config
         self.model_name = self.config.NAME
         self.db_name = self.config.OUTPUT
@@ -22,9 +23,13 @@ class Model:
             self.conf = self.config.CONF
             yolo_wts = self.model_name + '.pt'
             self.model = YOLO(yolo_wts)
-        else:
+        elif self.task == 'encoding':
             self.topk = self.config.TOPK
             self.model = SentenceTransformer(self.model_name)
+        else:
+            self.device = self.config.DEVICE
+            is_gpu = True if self.device == 'gpu' else False
+            self.model = easyocr.Reader(lngs, gpu=is_gpu)
 
         self.forward = self.setup_forward()
 
@@ -48,6 +53,8 @@ class Model:
             forward[self.output_name] = self.__vectorize_img
         elif self.output_name == 'text_vector':
             forward[self.output_name] = self.__vectorize_text
+        elif self.output_name == 'text':
+            forward[self.output_name] = self.model.readtext
         else:
             forward[self.output_name] = self.__detect
         return forward

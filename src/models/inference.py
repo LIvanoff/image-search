@@ -1,6 +1,8 @@
 from typing import Any
 
 import pandas as pd
+import numpy as np
+import cv2
 import copy
 import os
 from pathlib import Path
@@ -16,7 +18,7 @@ CFG_FILE_PATH = os.path.join((Path(__file__).resolve().parent / "./"), config_ro
 
 
 class ModelLauncher:
-    def __init__(self, task_type: str):
+    def __init__(self, task_type: str, lngs: list = None):
         self.config = self.parse_config(CFG_FILE_PATH)
 
         if task_type == "image_text_encoding":
@@ -25,13 +27,30 @@ class ModelLauncher:
             self.model_config = self.config.MODEL.TEXT_ENCODER
         elif task_type == "tagging":
             self.model_config = self.config.MODEL.DETECT
+        elif task_type == "ocr":
+            self.model_config = self.config.MODEL.OCR
         else:
             raise NotImplementedError(
                 f"Задачи {task_type} не существует.\n"
                 f"Вы можете указать одну из следующих задач: image_text_encoding, text_encoding or tagging"
             )
 
-        self.model = Model(self.model_config)
+        self.model = Model(self.model_config, lngs=lngs)
+
+    def text_to_image(self, output, input):
+        # image = cv2.imread(file)
+        image = np.array(input)
+        for res in output:
+            top_left = tuple(res[0][0])  # top left coordinates as tuple
+            bottom_right = tuple(res[0][2])  # bottom right coordinates as tuple
+            # draw rectangle on image
+            print(top_left)
+            print(bottom_right)
+            cv2.rectangle(image, top_left, bottom_right, (0, 255, 0), 2)
+            # write recognized text on image (top_left) minus 10 pixel on y
+            cv2.putText(image, res[1], (top_left[0], top_left[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+        cv2.imshow(image)
+        return image
 
     def parse_config(self, config_path):
         cfg_from_yaml_file(config_path, cfg)
@@ -42,7 +61,7 @@ class ModelLauncher:
         return cfg
 
     def create_images_df(
-        self, photos: list[Photo], filters: dict = None
+            self, photos: list[Photo], filters: dict = None
     ) -> pd.DataFrame:
         columns = list()
 
@@ -66,7 +85,7 @@ class ModelLauncher:
     # TODO:
     def find_images(self, input: str | Any, images_db: pd.DataFrame) -> pd.DataFrame:
         assert (
-            self.model.task == "encoding"
+                self.model.task == "encoding"
         ), f"Функцию find_images() нельзя вызвать для модели {self.model.model_name}, она выполняет задачу {self.model.task}"
 
         output_vec = self.model(input)
@@ -99,6 +118,9 @@ class ModelLauncher:
         output = self.model(input)
         return output
 
+    def translate(self, input):
+        output = self.model(input)
+        return output
 
 # model = ModelLauncher('image_text_encoding')
 # text = 'Москва, 1980 г.'
