@@ -23,25 +23,32 @@ class ItemImg(BaseModel):
     content: bytes
 
 
-@router.post("/find_images/")
+@router.post("/find_images")
 async def find_images(
-        filename: str | None = None,
-        file: UploadFile | None = None,
-        text: Optional[str] = None,
-        filters: dict | None = None,
-        session: AsyncSession = Depends(database.session_dependency),
+    text: Optional[str] = None,
+    filters: dict | None = None,
+    session: AsyncSession = Depends(database.session_dependency),
 ):
-    photos: list[Photo] = await photos_service.get_photos(
-        session=session
-    )
-    if text is not None:
-        input = text
-        model = ModelLauncher("text_encoding")
-    else:
-        input = Image.open(file.file)
-        model = ModelLauncher("image_text_encoding")
+    photos: list[Photo] = await photos_service.get_photos(session=session)
+    input = text
+    model = ModelLauncher("text_encoding")
 
     image_db = model.create_images_df(photos, filters)
+    similar_images = model.find_images(input=input, images_db=image_db)
+    return {"similar_images": similar_images.id.tolist()}
+
+
+@router.post("/find_images_photo")
+async def find_images(
+    file: UploadFile,
+    session: AsyncSession = Depends(database.session_dependency),
+):
+    photos: list[Photo] = await photos_service.get_photos(session=session)
+
+    input = Image.open(file.file)
+    model = ModelLauncher("image_text_encoding")
+
+    image_db = model.create_images_df(photos)
     similar_images = model.find_images(input=input, images_db=image_db)
     return {"similar_images": similar_images.id.tolist()}
 
