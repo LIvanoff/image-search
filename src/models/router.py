@@ -49,8 +49,7 @@ async def translate(
     model = ModelLauncher('ocr', lngs=['en', 'ru'])
     output = model.translate(input)
     result = model.text_to_image(output, input=input)
-
-    return result
+    return result.tolist()
 
 
 @router.post("/find_images_photo")
