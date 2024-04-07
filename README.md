@@ -14,6 +14,8 @@ pip3 install > requirements.txt
 
 Создать объект класса ModelLauncher, указав одну из задач: `tagging`, `image_text_enc` или `text_enc`.
 ```python
+from src.models.inference import ModelLauncher
+
 # модель для тэгирования
 model = ModelLauncher('tagging')
 
