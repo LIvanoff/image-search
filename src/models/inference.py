@@ -7,6 +7,7 @@ from pathlib import Path
 
 from src.config import cfg, cfg_from_yaml_file
 from src.models.model import Model
+from src.photos.models import Photo
 
 config_folder = Path('../../config')
 config_file = Path('config.yaml')
@@ -36,16 +37,30 @@ class ModelLauncher:
         cfg.EXP_GROUP_PATH = '/'.join(config_path.split('/')[1:-1])  # remove 'cfgs' and 'xxxx.yaml'
         return cfg
 
+    def create_images_df(self, photos: list[Photo], filters: dict) -> pd.DataFrame:
+        columns = list(filters.keys())
+        columns.append(self.model.output_name)
+        columns.append("id")
+        values = dict()
+        values = {k: [] for k in columns}
+        for photo in photos:
+            for col in values.keys():
+                if col in columns:
+                    values[col].append(photo[col])
+
+        images_db = pd.DataFrame.from_dict(values)
+        return images_db
+
     # TODO:
     def find_images(self, input: str | Any, images_db: pd.DataFrame) -> pd.DataFrame:
-        assert self.model.task == 'vectorize', f'Функцию find_images() нельзя вызвать для модели {self.model.model_name}, она выполняет задачу {self.model.task}'
+        assert self.model.task == 'encoding', f'Функцию find_images() нельзя вызвать для модели {self.model.model_name}, она выполняет задачу {self.model.task}'
 
         output_vec = self.model(input)
         result_df = copy.deepcopy(images_db)
-        result_df['Distance_with_input'] = result_df.apply(
+        result_df['distance'] = result_df.apply(
             lambda x: self.model.calculate_cos_dist(output_vec, x[f'{self.model.output_name}']), axis=1)
-        result_df_sorted = result_df.sort_values('Distance_with_input').reset_index()
-        result_df_sorted = result_df_sorted[['Image', 'Distance_with_input']]
+        result_df_sorted = result_df.sort_values('distance').reset_index()
+        result_df_sorted = result_df_sorted[['id', 'distance']]
         return result_df_sorted.head(self.model.topk)
 
     # TODO: на вход подается файл с изображением, на выходе list с тэгами
