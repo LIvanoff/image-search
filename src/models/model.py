@@ -44,9 +44,9 @@ class Model:
 
     def setup_forward(self):
         forward = {}
-        if self.output_name == 'vec_img_text':
+        if self.output_name == 'image_vector':
             forward[self.output_name] = self.__vectorize_img
-        elif self.output_name == 'vec_text':
+        elif self.output_name == 'text_vector':
             forward[self.output_name] = self.__vectorize_text
         else:
             forward[self.output_name] = self.__detect
