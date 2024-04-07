@@ -1,20 +1,20 @@
 MODEL:
   TEXT_ENCODER:
-    NAME: paraphrase-multilingual-MiniLM-L12-v2
+    NAME: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
 #    nli-distilroberta-base-v2
-    OUTPUT: vec_text
+    OUTPUT: text_vector
     TASK: encoding
     TOPK: 20
     DEVICE: cpu
   IMAGE_TEXT_ENCODER:
     NAME: clip-ViT-B-16
-    OUTPUT: vec_img_text
+    OUTPUT: image_vector
     TASK: encoding
     TOPK: 20
     DEVICE: cpu
   DETECT:
     NAME: yolov8m
-    OUTPUT: tag
+    OUTPUT: tags
     TASK: tagging
     TAGS:
       person: 0
