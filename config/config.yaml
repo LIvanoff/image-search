@@ -12,6 +12,11 @@ MODEL:
     TASK: encoding
     TOPK: 20
     DEVICE: cpu
+  OCR:
+    NAME: EasyOCR
+    OUTPUT: text
+    TASK: translate
+    DEVICE: cpu
   DETECT:
     NAME: yolov8m
     OUTPUT: tags
