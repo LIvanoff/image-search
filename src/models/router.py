@@ -112,7 +112,7 @@ async def all(filename: str, content: UploadFile):
     vector_img = model_img.vectorize(image)
     tags = model_tags.tagging(image)
 
-    palette = get_palette(image)
+    palette = get_palette(image.convert('RGB'))
     # print(palette)
 
     return {
