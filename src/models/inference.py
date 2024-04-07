@@ -44,6 +44,7 @@ class ModelLauncher:
         values = dict()
         values = {k: [] for k in columns}
         for photo in photos:
+            photo = photo.__dict__
             for col in values.keys():
                 if col in columns:
                     values[col].append(photo[col])
