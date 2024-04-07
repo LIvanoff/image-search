@@ -25,25 +25,25 @@ class ItemImg(BaseModel):
 
 @router.post("/find_images/")
 async def find_images(
-    filename: str,
-    file: UploadFile | None = None,
-    text: Optional[str] = None,
-    session: AsyncSession = Depends(database.session_dependency),
+        filename: str | None = None,
+        file: UploadFile | None = None,
+        text: Optional[str] = None,
+        filters: dict | None = None,
+        session: AsyncSession = Depends(database.session_dependency),
 ):
+    photos: list[Photo] = await photos_service.get_photos(
+        session=session
+    )
+    if text is not None:
+        input = text
+        model = ModelLauncher("text_encoding")
+    else:
+        input = Image.open(file.file)
+        model = ModelLauncher("image_text_encoding")
 
-    # photos: list[Photo] = await photos_service.get_photos(
-    #     session=session
-    # )  # TODO: Получение фото
-
-    image = Image.open(io.BytesIO(item.content))
-    model = ModelLauncher("image_text_encoding")
-
-    # result = await session.scalars(select)
-
-    # todo сюда дописать 2 параметр список всех векторов
-    # todo для этого сходить в бд
-    similar_images = model.find_images(input=image, images_db="")
-    return {"similar_images": similar_images}
+    image_db = model.create_images_df(photos, filters)
+    similar_images = model.find_images(input=input, images_db=image_db)
+    return {"similar_images": similar_images.id.tolist()}
 
 
 @router.post("/vectorize_image/")
