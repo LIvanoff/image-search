@@ -7,7 +7,7 @@ git clone https://github.com/LIvanoff/image-search
 Перейти в папку с проектом и установить зависимости
 ```shell
 cd image-search
-pip install -к requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Запуск 
