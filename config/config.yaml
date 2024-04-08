@@ -6,7 +6,7 @@ MODEL:
     TASK: encoding
     TOPK: 20
     DEVICE: cpu
-  IMAGE_TEXT_ENCODER:
+  IMAGE_ENCODER:
     NAME: clip-ViT-B-16
     OUTPUT: image_vector
     TASK: encoding

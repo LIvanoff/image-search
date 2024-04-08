@@ -22,7 +22,7 @@ class ModelLauncher:
         self.config = self.parse_config(CFG_FILE_PATH)
 
         if task_type == "image_encoding":
-            self.model_config = self.config.MODEL.IMAGE_TEXT_ENCODER
+            self.model_config = self.config.MODEL.IMAGE_ENCODER
         elif task_type == "text_encoding":
             self.model_config = self.config.MODEL.TEXT_ENCODER
         elif task_type == "tagging":
