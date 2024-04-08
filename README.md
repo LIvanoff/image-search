@@ -49,6 +49,6 @@ vector = model.vectorize(file)
 text = 'Москва, 1980 г.'
 model.vectorize(text)
 # vector = [0.3258 -0.19153 -0.031129 0.16856 -0.32208 ... -0.9297]
-# vector.shape = (768,)
+# vector.shape = (384,)
 # type(vector) = <class 'numpy.ndarray'>
 ```
