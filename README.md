@@ -20,10 +20,13 @@ from src.models.inference import ModelLauncher
 model = ModelLauncher('tagging')
 
 # модель для кодирования изображения
-model = ModelLauncher('image_text_enc')
+model = ModelLauncher('image_enc')
 
 # модель для кодирования текста
-model = ModelLauncher('text_enc') 
+model = ModelLauncher('text_enc')
+
+# модель для распознавания текста
+easyocr = ModelLauncher('ocr')  
 ```
 #### Вызвать функцию тэггинга
 ```python
