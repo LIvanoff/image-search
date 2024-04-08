@@ -37,6 +37,7 @@ class ModelLauncher:
 
         self.model = Model(self.model_config, lngs=lngs)
 
+    # TODO: улчешить отрисовку bounding box, в некоторых случаях происходят ошибки
     def text_to_image(self, output, input):
         # image = cv2.imread(file)
         image = np.array(input)
