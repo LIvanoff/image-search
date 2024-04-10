@@ -37,7 +37,6 @@ class ModelLauncher:
 
         self.model = Model(self.model_config, lngs=lngs)
 
-    # TODO: улчешить отрисовку bounding box, в некоторых случаях происходят ошибки
     def text_to_image(self, output, input):
         # image = cv2.imread(file)
         image = np.array(input)
@@ -82,7 +81,6 @@ class ModelLauncher:
         images_db = pd.DataFrame.from_dict(values)
         return images_db
 
-    # TODO:
     def find_images(self, input: str | Any, images_db: pd.DataFrame) -> pd.DataFrame:
         assert (
                 self.model.task == "encoding"
@@ -100,7 +98,6 @@ class ModelLauncher:
         result_df_sorted = result_df_sorted[["id", "distance"]]
         return result_df_sorted.head(self.model.topk)
 
-    # TODO: на вход подается файл с изображением, на выходе list с тэгами
     def tagging(self, input):
         assert self.model.task == "tagging", (
             f"Функцию tagging() нельзя вызвать для модели {self.model.model_name}, "
@@ -109,7 +106,6 @@ class ModelLauncher:
         output = self.model(input)
         return output
 
-    # TODO: на вход подается файл с изображением или текст, или список, на выходе список (вектор) или список списков (список векторов)
     def vectorize(self, input):
         assert self.model.task == "encoding", (
             f"Функцию vectorize() нельзя вызвать для модели {self.model.model_name}"
