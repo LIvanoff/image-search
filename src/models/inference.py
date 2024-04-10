@@ -121,8 +121,8 @@ class ModelLauncher:
     def translate(self, input):
         output = self.model(
                             input,
-                            paragraph=self.paragraph,
-                            text_threshold=self.text_threshold
+                            paragraph=self.model.paragraph,
+                            text_threshold=self.model.text_threshold
                             )
         return output
 
